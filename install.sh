@@ -54,7 +54,7 @@ append_if_missing '  if [ -z "$issue" ]; then echo "Usage: issue-space <issue-nu
 append_if_missing '  local repo=$(gh repo view --json nameWithOwner --jq ".nameWithOwner" 2>/dev/null)'
 append_if_missing '  if [ -z "$repo" ]; then echo "Not inside a GitHub repo"; return 1; fi'
 append_if_missing '  echo "🛸 Creating Codespace for $repo issue #$issue..."'
-append_if_missing '  local name=$(gh codespace create --repo "$repo" --display-name "#$issue" --machine basicLinux32gb 2>&1 | tail -1)'
+append_if_missing '  local name=$(gh codespace create --repo "$repo" --display-name "#$issue" --machine basicLinux32gb --default-permissions 2>&1 | tail -1)'
 append_if_missing '  echo "✅ Codespace ready: $name"'
 append_if_missing '  gh codespace code --codespace "$name"'
 append_if_missing '}'
