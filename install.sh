@@ -30,4 +30,17 @@ append_if_missing 'alias gs="git status"'
 append_if_missing 'alias gl="git log --oneline --graph --decorate -20"'
 append_if_missing 'alias gco="git checkout"'
 
+# --- issue-space function ---
+append_if_missing '# Start a Codespace for a given issue number and open it in VS Code'
+append_if_missing 'issue-space() {'
+append_if_missing '  local issue=$1'
+append_if_missing '  if [ -z "$issue" ]; then echo "Usage: issue-space <issue-number>"; return 1; fi'
+append_if_missing '  local repo=$(gh repo view --json nameWithOwner --jq ".nameWithOwner" 2>/dev/null)'
+append_if_missing '  if [ -z "$repo" ]; then echo "Not inside a GitHub repo"; return 1; fi'
+append_if_missing '  echo "🛸 Creating Codespace for $repo issue #$issue..."'
+append_if_missing '  local name=$(gh codespace create --repo "$repo" --env "ISSUE=$issue" --display-name "issue-$issue" --status 2>&1 | tail -1)'
+append_if_missing '  echo "✅ Codespace ready: $name"'
+append_if_missing '  gh codespace code --codespace "$name"'
+append_if_missing '}'
+
 echo "✅ dotfiles setup complete"
