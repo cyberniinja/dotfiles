@@ -7,12 +7,14 @@ set -euo pipefail
 echo "🔧 Setting up dotfiles..."
 
 # --- GitHub Copilot CLI ---
-if gh extension list 2>/dev/null | grep -q "gh-copilot"; then
-  echo "✅ gh-copilot already installed"
+# Auth is handled via the GITHUB_TOKEN Codespaces secret — no login step needed.
+# Set it up at: github.com → Settings → Codespaces → Secrets
+if command -v copilot &>/dev/null; then
+  echo "✅ copilot CLI already installed"
 else
-  echo "Installing gh-copilot..."
-  gh extension install github/gh-copilot
-  echo "✅ gh-copilot installed"
+  echo "Installing copilot CLI..."
+  curl -fsSL https://gh.io/copilot-install | bash
+  echo "✅ copilot CLI installed"
 fi
 
 # --- zsh config ---
