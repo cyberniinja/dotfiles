@@ -6,6 +6,22 @@ set -euo pipefail
 
 echo "🔧 Setting up dotfiles..."
 
+# --- Copilot CLI config ---
+# Pre-seed config to skip first-run prompts in Codespaces
+COPILOT_CONFIG_DIR="$HOME/.copilot"
+COPILOT_CONFIG="$COPILOT_CONFIG_DIR/config.json"
+mkdir -p "$COPILOT_CONFIG_DIR"
+if [ ! -f "$COPILOT_CONFIG" ]; then
+  cat > "$COPILOT_CONFIG" << 'COPILOT_CONFIG_EOF'
+{
+  "banner": "never",
+  "trusted_folders": ["/workspaces"],
+  "firstLaunchAt": "2026-01-01T00:00:00.000Z"
+}
+COPILOT_CONFIG_EOF
+  echo "✅ copilot config pre-seeded"
+fi
+
 # --- GitHub Copilot CLI ---
 # Auth is handled via the GITHUB_TOKEN Codespaces secret — no login step needed.
 # Set it up at: github.com → Settings → Codespaces → Secrets
